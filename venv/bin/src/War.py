@@ -1,4 +1,4 @@
-from Deck import Deck, Suit, Card, Value
+from Deck import Deck, Card
 from Player import Player
 
 
@@ -7,25 +7,25 @@ def compare(card1: Card, card2: Card) -> int:
 
 
 def war(p1: Player, p2: Player):
-    cards = Deck(kind='empty')
+    risked_cards = Deck(kind='empty')
     for i in range(3):
-        cards.put_card_on_bottom(p1.draw_card())
-        cards.put_card_on_bottom(p2.draw_card())
+        risked_cards.put_card_on_bottom(p1.draw_card())
+        risked_cards.put_card_on_bottom(p2.draw_card())
 
     card1 = p1.draw_card()
     card2 = p2.draw_card()
 
-    cards.put_card_on_bottom(card1)
-    cards.put_card_on_bottom(card2)
+    risked_cards.put_card_on_bottom(card1)
+    risked_cards.put_card_on_bottom(card2)
 
     if card1.compare_to(card2) < 0:
         winner = p2
     elif card1.compare_to(card2) > 0:
         winner = p1
     else:
-        winner, cards = war(p1, p2)
+        winner, risked_cards = war(p1, p2)
 
-    return winner, cards
+    return winner, risked_cards
 
 
 def take_turn(p1: Player, p2: Player):
