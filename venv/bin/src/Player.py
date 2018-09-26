@@ -10,7 +10,7 @@ class Player:
         return f'Player {self.id + 1}'
 
     def give_cards(self, deck: Deck):
-        for card in deck.cards:
+        for card in deck._cards:
             self.deck.put_card_on_bottom(card)
 
     def draw_card(self) -> Card:

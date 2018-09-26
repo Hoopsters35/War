@@ -102,10 +102,12 @@ if __name__ == '__main__':
         print(f'Player 1: {players[0].deck.size()} Player 2: {players[1].deck.size()}')
         print()
 
-    if players[0].deck.size() > 0:
+    if players[0].deck.size() > players[1].deck.size():
         print('Player 1 wins!')
-    else:
+    elif players[1].deck.size() > players[0].deck.size():
         print('Player 2 wins!')
+    else:
+        print("It's a tie!")
     print(f'Total turns: {num_turns}')
 
 

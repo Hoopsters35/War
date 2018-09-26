@@ -61,18 +61,11 @@ class Deck:
     def draw_card(self) -> Card:
         return self._cards.pop(0)
 
-    @classmethod
-    def draw_cards(cls, num: int):
-        cards = []
-        for card in range(num):
-            cards.append(self._cards.pop())
-        return cls(cards)
-
     def put_card_on_bottom(self, card: Card):
         self._cards.append(card)
 
     def put_cards_on_bottom(self, deck: 'Deck'):
-        for card in deck.cards:
+        for card in deck._cards:
             self._cards.append(card)
 
     def reset_deck(self):
