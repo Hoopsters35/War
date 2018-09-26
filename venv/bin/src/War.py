@@ -76,6 +76,7 @@ def take_turn(p1: Player, p2: Player):
 if __name__ == '__main__':
 
     NUMBER_OF_PLAYERS = 2
+    MAX_TURNS = 5000
 
     cards = Deck()
     cards.shuffle()
@@ -95,7 +96,7 @@ if __name__ == '__main__':
     print(f'Player 2 has {players[1].deck.size()} cards')
     num_turns = 0
 
-    while players[0].deck.size() > 0 and players[1].deck.size() > 0 and num_turns < 5000:
+    while players[0].deck.size() > 0 and players[1].deck.size() > 0 and num_turns < MAX_TURNS:
         take_turn(players[0], players[1])
         num_turns += 1
         print(f'Player 1: {players[0].deck.size()} Player 2: {players[1].deck.size()}')

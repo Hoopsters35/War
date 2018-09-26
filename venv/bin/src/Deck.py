@@ -45,41 +45,41 @@ class Card:
 class Deck:
     def __init__(self, kind: str='normal'):
         if kind == 'normal':
-            self.cards = Deck.new_deck()
+            self._cards = Deck.new_deck()
         elif kind == 'empty':
-            self.cards = []
+            self._cards = []
 
     def __iter__(self):
-        return self.cards
+        return self._cards
 
     def __repr__(self):
-        return self.cards.__repr__()
+        return self._cards.__repr__()
 
     def shuffle(self):
-        random.shuffle(self.cards)
+        random.shuffle(self._cards)
 
     def draw_card(self) -> Card:
-        return self.cards.pop(0)
+        return self._cards.pop(0)
 
     @classmethod
     def draw_cards(cls, num: int):
         cards = []
         for card in range(num):
-            cards.append(self.cards.pop())
+            cards.append(self._cards.pop())
         return cls(cards)
 
     def put_card_on_bottom(self, card: Card):
-        self.cards.append(card)
+        self._cards.append(card)
 
     def put_cards_on_bottom(self, deck: 'Deck'):
         for card in deck.cards:
-            self.cards.append(card)
+            self._cards.append(card)
 
     def reset_deck(self):
-        self.cards = Deck.new_deck()
+        self._cards = Deck.new_deck()
 
     def size(self) -> int:
-        return len(self.cards)
+        return len(self._cards)
 
     @staticmethod
     def new_deck():
