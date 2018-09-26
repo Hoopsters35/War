@@ -2,12 +2,13 @@ from Deck import Deck, Card
 
 
 class Player:
-    def __init__(self, number: int, deck: Deck=None):
+    def __init__(self, number: int, deck: Deck=Deck(kind='empty')):
         self.id = number
         self.deck = deck
 
     def give_cards(self, deck: Deck):
-        self.deck = deck
+        for card in deck:
+            self.deck.put_card_on_bottom(card)
 
     def draw_card(self) -> Card:
         return self.deck.draw_card()

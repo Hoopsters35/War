@@ -9,23 +9,29 @@ def compare(card1: Card, card2: Card) -> int:
 def war(p1: Player, p2: Player):
     risked_cards = Deck(kind='empty')
     for i in range(3):
-        risked_cards.put_card_on_bottom(p1.draw_card())
-        risked_cards.put_card_on_bottom(p2.draw_card())
+        if p1.deck.size() > 1:
+            risked_cards.put_card_on_bottom(p1.draw_card())
+        if p2.deck.size() > 1:
+            risked_cards.put_card_on_bottom(p2.draw_card())
 
     card1 = p1.draw_card()
+    print(f'Player 1 draws a {card1} in the war')
     card2 = p2.draw_card()
+    print(f'Player 2 draws a {card2} in the war')
 
     risked_cards.put_card_on_bottom(card1)
     risked_cards.put_card_on_bottom(card2)
 
     if card1.compare_to(card2) < 0:
         winner = p2
+        print('Player 2 won the war!')
     elif card1.compare_to(card2) > 0:
         winner = p1
+        print('Player 1 won the war!')
     else:
         winner, risked_cards = war(p1, p2)
 
-    return winner, risked_cards
+    return winner, risked_cards.shuffle()
 
 
 def take_turn(p1: Player, p2: Player):
@@ -44,11 +50,18 @@ def take_turn(p1: Player, p2: Player):
         p2.give_card(card2)
         print('Player 2 wins the hand!')
     else:
-        print('War!')
-        winner, cards = war(p1, p2)
-        winner.give_card(card1)
-        winner.give_card(card2)
-        winner.give_cards(cards)
+        if p1.deck.size() == 0:
+            p2.give_card(card1)
+            p2.give_card(card2)
+        elif p2.deck.size() == 0:
+            p1.give_card(card1)
+            p1.give_card(card2)
+        else:
+            print('War!')
+            winner, cards = war(p1, p2)
+            winner.give_card(card1)
+            winner.give_card(card2)
+            winner.give_cards(cards)
 
 
 if __name__ == '__main__':
@@ -68,7 +81,22 @@ if __name__ == '__main__':
     for i in range(cards.size()):
         players[1].give_card(cards.draw_card())
 
-    take_turn(players[0], players[1])
+    print('---------Start game----------')
+    print(f'Player 1 has {players[0].deck.size()} cards')
+    print(f'Player 2 has {players[1].deck.size()} cards')
+    num_turns = 0
+
+    while players[0].deck.size() > 0 and players[1].deck.size() > 0:
+        take_turn(players[0], players[1])
+        num_turns += 1
+        print(f'Player 1: {players[0].deck.size()} Player 2: {players[1].deck.size()}')
+        print()
+
+    if players[0].deck.size() > 0:
+        print('Player 1 wins!')
+    else:
+        print('Player 2 wins!')
+    print(f'Total turns: {num_turns}')
 
 
 

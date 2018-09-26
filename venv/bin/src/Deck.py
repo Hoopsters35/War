@@ -49,6 +49,9 @@ class Deck:
         elif kind == 'empty':
             self.cards = []
 
+    def __iter__(self):
+        return self.cards
+
     def shuffle(self):
         random.shuffle(self.cards)
 
