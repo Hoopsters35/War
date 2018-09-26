@@ -2,10 +2,6 @@ from Deck import Deck, Card
 from Player import Player
 
 
-def compare(card1: Card, card2: Card) -> int:
-    return card1.compare_to(card2)
-
-
 def war(p1: Player, p2: Player):
     risked_cards = Deck(kind='empty')
     for i in range(3):
@@ -48,11 +44,11 @@ def take_turn(p1: Player, p2: Player):
     print(f'Player 1 drew {card1}')
     print(f'Player 2 drew {card2}')
 
-    if compare(card1, card2) > 0:
+    if card1.compare_to(card2) > 0:
         p1.give_card(card1)
         p1.give_card(card2)
         print('Player 1 wins the hand!')
-    elif compare(card1, card2) < 0:
+    elif card1.compare_to(card2) < 0:
         p2.give_card(card1)
         p2.give_card(card2)
         print('Player 2 wins the hand!')
