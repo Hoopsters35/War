@@ -31,7 +31,7 @@ def war(p1: Player, p2: Player):
     else:
         winner, risked_cards = war(p1, p2)
 
-    return winner, risked_cards.shuffle()
+    return winner, risked_cards
 
 
 def take_turn(p1: Player, p2: Player):
@@ -61,7 +61,9 @@ def take_turn(p1: Player, p2: Player):
             winner, cards = war(p1, p2)
             winner.give_card(card1)
             winner.give_card(card2)
+            print(f'Cards won: {cards}')
             winner.give_cards(cards)
+            print(f'Gave cards to {winner}')
 
 
 if __name__ == '__main__':

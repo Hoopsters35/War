@@ -6,8 +6,11 @@ class Player:
         self.id = number
         self.deck = deck
 
+    def __repr__(self):
+        return f'Player {self.id}'
+
     def give_cards(self, deck: Deck):
-        for card in deck:
+        for card in deck.cards:
             self.deck.put_card_on_bottom(card)
 
     def draw_card(self) -> Card:

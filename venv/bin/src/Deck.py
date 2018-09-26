@@ -52,11 +52,14 @@ class Deck:
     def __iter__(self):
         return self.cards
 
+    def __repr__(self):
+        return self.cards.__repr__()
+
     def shuffle(self):
         random.shuffle(self.cards)
 
     def draw_card(self) -> Card:
-        return self.cards.pop()
+        return self.cards.pop(0)
 
     @classmethod
     def draw_cards(cls, num: int):
