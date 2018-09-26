@@ -29,7 +29,14 @@ def war(p1: Player, p2: Player):
         winner = p1
         print('Player 1 won the war!')
     else:
-        winner, risked_cards = war(p1, p2)
+        if p1.deck.size() > 0 and p2.deck.size() > 0:
+            winner, extra_cards = war(p1, p2)
+            risked_cards.put_cards_on_bottom(extra_cards)
+        else:
+            if p1.deck.size() > 0:
+                winner = p1
+            else:
+                winner = p2
 
     return winner, risked_cards
 
@@ -88,7 +95,7 @@ if __name__ == '__main__':
     print(f'Player 2 has {players[1].deck.size()} cards')
     num_turns = 0
 
-    while players[0].deck.size() > 0 and players[1].deck.size() > 0:
+    while players[0].deck.size() > 0 and players[1].deck.size() > 0 and num_turns < 5000:
         take_turn(players[0], players[1])
         num_turns += 1
         print(f'Player 1: {players[0].deck.size()} Player 2: {players[1].deck.size()}')

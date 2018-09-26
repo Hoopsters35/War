@@ -71,6 +71,10 @@ class Deck:
     def put_card_on_bottom(self, card: Card):
         self.cards.append(card)
 
+    def put_cards_on_bottom(self, deck: 'Deck'):
+        for card in deck.cards:
+            self.cards.append(card)
+
     def reset_deck(self):
         self.cards = Deck.new_deck()
 
