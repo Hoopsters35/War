@@ -7,8 +7,12 @@ def war(p1: Player, p2: Player):
     for i in range(3):
         if p1.deck.size() > 1:
             risked_cards.put_card_on_bottom(p1.draw_card())
+        else:
+            return p2, risked_cards
         if p2.deck.size() > 1:
             risked_cards.put_card_on_bottom(p2.draw_card())
+        else:
+            return p1, risked_cards
 
     card1 = p1.draw_card()
     print(f'Player 1 draws a {card1} in the war')
@@ -45,20 +49,18 @@ def take_turn(p1: Player, p2: Player):
     print(f'Player 2 drew {card2}')
     
     risked_cards = Deck(cards=[card1, card2])
+    winner = p1
 
-    if card1.compare_to(card2) > 0 or p2.deck.size() is 0:
-        p1.give_cards(risked_cards)
-        print('Player 1 wins the hand!')
-    elif card1.compare_to(card2) < 0 or p1.deck.size is 0:
-        p2.give_cards(risked_cards)
-        print('Player 2 wins the hand!')
-    else:
+    if card1.compare_to(card2) < 0 or p1.deck.size is 0:
+        winner = p2
+    elif card1.compare_to(card2) is 0:
         print('War!')
         winner, cards = war(p1, p2)
-        winner.give_cards(risked_cards)
         print(f'Cards won: {cards}')
-        winner.give_cards(cards)
-        print(f'Gave cards to {winner}')
+        risked_cards.put_cards_on_bottom(cards)
+    
+    winner.give_cards(risked_cards)
+    print(f'{winner} won the hand!')
 
 
 if __name__ == '__main__':
