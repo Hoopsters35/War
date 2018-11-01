@@ -43,11 +43,13 @@ class Card:
 
 
 class Deck:
-    def __init__(self, kind: str='normal'):
+    def __init__(self, kind: str='normal', cards=[]):
         if kind == 'normal':
             self._cards = Deck.new_deck()
         elif kind == 'empty':
             self._cards = []
+        if cards:
+            self._cards = cards
 
     def __iter__(self):
         return self._cards

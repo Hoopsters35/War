@@ -7,8 +7,12 @@ def war(p1: Player, p2: Player):
     for i in range(3):
         if p1.deck.size() > 1:
             risked_cards.put_card_on_bottom(p1.draw_card())
+        else:
+            return p2, risked_cards
         if p2.deck.size() > 1:
             risked_cards.put_card_on_bottom(p2.draw_card())
+        else:
+            return p1, risked_cards
 
     card1 = p1.draw_card()
     print(f'Player 1 draws a {card1} in the war')
@@ -37,36 +41,25 @@ def war(p1: Player, p2: Player):
     return winner, risked_cards
 
 
-def take_turn(p1: Player, p2: Player):
-    card1 = p1.draw_card()
-    card2 = p2.draw_card()
+def take_turn(players):
+    cards = [player.draw_card() for player in players]
 
-    print(f'Player 1 drew {card1}')
-    print(f'Player 2 drew {card2}')
+    for player in players:
+        print(f'{player} drew {cards[player.id - 1]}')
+    
+    risked_cards = Deck(cards=cards)
+    winner = players[0]
 
-    if card1.compare_to(card2) > 0:
-        p1.give_card(card1)
-        p1.give_card(card2)
-        print('Player 1 wins the hand!')
-    elif card1.compare_to(card2) < 0:
-        p2.give_card(card1)
-        p2.give_card(card2)
-        print('Player 2 wins the hand!')
-    else:
-        if p1.deck.size() == 0:
-            p2.give_card(card1)
-            p2.give_card(card2)
-        elif p2.deck.size() == 0:
-            p1.give_card(card1)
-            p1.give_card(card2)
-        else:
-            print('War!')
-            winner, cards = war(p1, p2)
-            winner.give_card(card1)
-            winner.give_card(card2)
-            print(f'Cards won: {cards}')
-            winner.give_cards(cards)
-            print(f'Gave cards to {winner}')
+    if cards[0].compare_to(cards[1]) < 0 or players[0].deck.size is 0:
+        winner = players[1]
+    elif cards[0].compare_to(cards[1]) is 0:
+        print('War!')
+        winner, war_cards = war(players[0], players[1])
+        print(f'Cards won: {war_cards}')
+        risked_cards.put_cards_on_bottom(war_cards)
+    
+    winner.give_cards(risked_cards)
+    print(f'{winner} won the hand!')
 
 
 if __name__ == '__main__':
@@ -80,7 +73,7 @@ if __name__ == '__main__':
     players = []
 
     for i in range(NUMBER_OF_PLAYERS):
-        players.append(Player(i, deck=Deck(kind='empty')))
+        players.append(Player(i+1, deck=Deck(kind='empty')))
 
     for i in range(int(cards.size()/2)):
         players[0].give_card(cards.draw_card())
@@ -88,14 +81,16 @@ if __name__ == '__main__':
         players[1].give_card(cards.draw_card())
 
     print('---------Start game----------')
-    print(f'Player 1 has {players[0].deck.size()} cards')
-    print(f'Player 2 has {players[1].deck.size()} cards')
+    for player in players:
+        print(f'{player} has {player.deck.size()} cards')
+
     num_turns = 0
 
     while players[0].deck.size() > 0 and players[1].deck.size() > 0 and num_turns < MAX_TURNS:
-        take_turn(players[0], players[1])
+        take_turn(players)
         num_turns += 1
-        print(f'Player 1: {players[0].deck.size()} Player 2: {players[1].deck.size()}')
+        for player in players:
+            print(f'{player}: {player.deck.size()}')
         print()
 
     if players[0].deck.size() > players[1].deck.size():
