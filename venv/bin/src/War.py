@@ -14,30 +14,22 @@ def war(p1: Player, p2: Player):
         else:
             return p1, risked_cards
 
-    card1 = p1.draw_card()
-    print(f'Player 1 draws a {card1} in the war')
-    card2 = p2.draw_card()
-    print(f'Player 2 draws a {card2} in the war')
+    cards = []
+    for player in players:
+        cards.append(player.draw_card())
+        print(f'{player} draws a {cards[player.id - 1]} in the war')
 
-    risked_cards.put_card_on_bottom(card1)
-    risked_cards.put_card_on_bottom(card2)
+    risked_cards.put_cards_on_bottom(Deck(cards=cards))
 
-    if card1.compare_to(card2) < 0:
+    if cards[0].compare_to(cards[1]) < 0:
         winner = p2
-        print('Player 2 won the war!')
-    elif card1.compare_to(card2) > 0:
+    elif cards[0].compare_to(cards[1]) > 0:
         winner = p1
-        print('Player 1 won the war!')
     else:
-        if p1.num_cards() > 0 and p2.num_cards() > 0:
-            winner, extra_cards = war(p1, p2)
-            risked_cards.put_cards_on_bottom(extra_cards)
-        else:
-            if p1.deck.size() > 0:
-                winner = p1
-            else:
-                winner = p2
+        winner, extra_cards = war(p1, p2)
+        risked_cards.put_cards_on_bottom(extra_cards)
 
+    print(f'{winner} won the war!')
     return winner, risked_cards
 
 
