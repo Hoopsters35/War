@@ -2,17 +2,17 @@ from Deck import Deck, Card
 from Player import Player
 
 
-def war(p1: Player, p2: Player):
+def war(players):
     risked_cards = Deck(kind='empty')
     for i in range(3):
-        if p1.deck.size() > 1:
-            risked_cards.put_card_on_bottom(p1.draw_card())
+        if players[0].deck.size() > 1:
+            risked_cards.put_card_on_bottom(players[0].draw_card())
         else:
-            return p2, risked_cards
-        if p2.deck.size() > 1:
-            risked_cards.put_card_on_bottom(p2.draw_card())
+            return players[1], risked_cards
+        if players[1].deck.size() > 1:
+            risked_cards.put_card_on_bottom(players[1].draw_card())
         else:
-            return p1, risked_cards
+            return players[0], risked_cards
 
     cards = []
     for player in players:
@@ -21,12 +21,12 @@ def war(p1: Player, p2: Player):
 
     risked_cards.put_cards_on_bottom(Deck(cards=cards))
 
-    if cards[0].compare_to(cards[1]) < 0:
-        winner = p2
-    elif cards[0].compare_to(cards[1]) > 0:
-        winner = p1
+    if cards[0].compare_to(cards[1]) > 0:
+        winner = players[0]
+    elif cards[0].compare_to(cards[1]) < 0:
+        winner = players[1]
     else:
-        winner, extra_cards = war(p1, p2)
+        winner, extra_cards = war(players)
         risked_cards.put_cards_on_bottom(extra_cards)
 
     print(f'{winner} won the war!')
@@ -46,10 +46,11 @@ def take_turn(players):
         winner = players[1]
     elif cards[0].compare_to(cards[1]) is 0:
         print('War!')
-        winner, war_cards = war(players[0], players[1])
+        winner, war_cards = war(players)
         print(f'Cards won: {war_cards}')
         risked_cards.put_cards_on_bottom(war_cards)
-    
+
+    risked_cards.shuffle()
     winner.give_cards(risked_cards)
     print(f'{winner} won the hand!')
 
