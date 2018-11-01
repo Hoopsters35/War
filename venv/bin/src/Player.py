@@ -7,7 +7,7 @@ class Player:
         self.deck = deck
 
     def __repr__(self):
-        return f'Player {self.id + 1}'
+        return f'Player {self.id}'
 
     def give_cards(self, deck: Deck):
         for card in deck._cards:

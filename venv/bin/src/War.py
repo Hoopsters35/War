@@ -80,7 +80,7 @@ if __name__ == '__main__':
     players = []
 
     for i in range(NUMBER_OF_PLAYERS):
-        players.append(Player(i, deck=Deck(kind='empty')))
+        players.append(Player(i+1, deck=Deck(kind='empty')))
 
     for i in range(int(cards.size()/2)):
         players[0].give_card(cards.draw_card())
