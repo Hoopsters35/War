@@ -41,23 +41,22 @@ def war(p1: Player, p2: Player):
     return winner, risked_cards
 
 
-def take_turn(p1: Player, p2: Player):
-    card1 = p1.draw_card()
-    card2 = p2.draw_card()
+def take_turn(players):
+    cards = [player.draw_card() for player in players]
 
-    print(f'Player 1 drew {card1}')
-    print(f'Player 2 drew {card2}')
+    for player in players:
+        print(f'{player} drew {cards[player.id - 1]}')
     
-    risked_cards = Deck(cards=[card1, card2])
-    winner = p1
+    risked_cards = Deck(cards=cards)
+    winner = players[0]
 
-    if card1.compare_to(card2) < 0 or p1.deck.size is 0:
-        winner = p2
-    elif card1.compare_to(card2) is 0:
+    if cards[0].compare_to(cards[1]) < 0 or players[0].deck.size is 0:
+        winner = players[1]
+    elif cards[0].compare_to(cards[1]) is 0:
         print('War!')
-        winner, cards = war(p1, p2)
-        print(f'Cards won: {cards}')
-        risked_cards.put_cards_on_bottom(cards)
+        winner, war_cards = war(players[0], players[1])
+        print(f'Cards won: {war_cards}')
+        risked_cards.put_cards_on_bottom(war_cards)
     
     winner.give_cards(risked_cards)
     print(f'{winner} won the hand!')
@@ -82,14 +81,16 @@ if __name__ == '__main__':
         players[1].give_card(cards.draw_card())
 
     print('---------Start game----------')
-    print(f'Player 1 has {players[0].deck.size()} cards')
-    print(f'Player 2 has {players[1].deck.size()} cards')
+    for player in players:
+        print(f'{player} has {player.deck.size()} cards')
+
     num_turns = 0
 
     while players[0].deck.size() > 0 and players[1].deck.size() > 0 and num_turns < MAX_TURNS:
-        take_turn(players[0], players[1])
+        take_turn(players)
         num_turns += 1
-        print(f'Player 1: {players[0].deck.size()} Player 2: {players[1].deck.size()}')
+        for player in players:
+            print(f'{player}: {player.deck.size()}')
         print()
 
     if players[0].deck.size() > players[1].deck.size():
