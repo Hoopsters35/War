@@ -5,16 +5,13 @@ from Player import Player
 def war(players):
     risked_cards = Deck(kind='empty')
     for i in range(3):
-        if players[0].num_cards() > 0:
-            risked_cards.put_card_on_bottom(players[0].draw_card())
-            if players[0].num_cards() is 0:
-                print(f'{players[0]} ran out of cards in the war!')
-                return players[1], risked_cards
-        if players[1].num_cards() > 0:
-            risked_cards.put_card_on_bottom(players[1].draw_card())
-            if players[1].num_cards() is 0:
-                print(f'{players[1]} ran out of cards in the war!')
-                return players[0], risked_cards
+        for player_id, player in enumerate(players):
+            if player.num_cards() > 0:
+                risked_cards.put_card_on_bottom(player.draw_card())
+                if player.num_cards() is 0:
+                    print(f'{player} ran out of cards in the war!')
+#                   by subtracting the ID, we should get the opposite player
+                    return players[player_id - 1], risked_cards
 
     cards = []
     for player in players:
