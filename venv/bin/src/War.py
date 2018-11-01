@@ -29,7 +29,7 @@ def war(p1: Player, p2: Player):
         winner = p1
         print('Player 1 won the war!')
     else:
-        if p1.deck.size() > 0 and p2.deck.size() > 0:
+        if p1.num_cards() > 0 and p2.num_cards() > 0:
             winner, extra_cards = war(p1, p2)
             risked_cards.put_cards_on_bottom(extra_cards)
         else:
@@ -50,7 +50,7 @@ def take_turn(players):
     risked_cards = Deck(cards=cards)
     winner = players[0]
 
-    if cards[0].compare_to(cards[1]) < 0 or players[0].deck.size is 0:
+    if cards[0].compare_to(cards[1]) < 0 or players[0].num_cards() is 0:
         winner = players[1]
     elif cards[0].compare_to(cards[1]) is 0:
         print('War!')
@@ -86,16 +86,16 @@ if __name__ == '__main__':
 
     num_turns = 0
 
-    while players[0].deck.size() > 0 and players[1].deck.size() > 0 and num_turns < MAX_TURNS:
+    while players[0].num_cards() > 0 and players[1].num_cards() > 0 and num_turns < MAX_TURNS:
         take_turn(players)
         num_turns += 1
         for player in players:
             print(f'{player}: {player.deck.size()}')
         print()
 
-    if players[0].deck.size() > players[1].deck.size():
+    if players[0].num_cards() > players[1].num_cards():
         print('Player 1 wins!')
-    elif players[1].deck.size() > players[0].deck.size():
+    elif players[1].num_cards() > players[0].num_cards():
         print('Player 2 wins!')
     else:
         print("It's a tie!")

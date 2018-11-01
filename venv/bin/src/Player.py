@@ -18,3 +18,6 @@ class Player:
 
     def give_card(self, card: Card):
         self.deck.put_card_on_bottom(card)
+
+    def num_cards(self):
+        return self.deck.size();
