@@ -5,14 +5,16 @@ from Player import Player
 def war(players):
     risked_cards = Deck(kind='empty')
     for i in range(3):
-        if players[0].deck.size() > 1:
+        if players[0].num_cards() > 0:
             risked_cards.put_card_on_bottom(players[0].draw_card())
-        else:
-            return players[1], risked_cards
-        if players[1].deck.size() > 1:
+            if players[0].num_cards() is 0:
+                print(f'{players[0]} ran out of cards in the war!')
+                return players[1], risked_cards
+        if players[1].num_cards() > 0:
             risked_cards.put_card_on_bottom(players[1].draw_card())
-        else:
-            return players[0], risked_cards
+            if players[1].num_cards() is 0:
+                print(f'{players[1]} ran out of cards in the war!')
+                return players[0], risked_cards
 
     cards = []
     for player in players:
@@ -21,15 +23,14 @@ def war(players):
 
     risked_cards.put_cards_on_bottom(Deck(cards=cards))
 
-    if cards[0].compare_to(cards[1]) > 0:
-        winner = players[0]
-    elif cards[0].compare_to(cards[1]) < 0:
-        winner = players[1]
-    else:
+    card_compare = cards[0].compare_to(cards[1])
+    if card_compare is 0:
         winner, extra_cards = war(players)
         risked_cards.put_cards_on_bottom(extra_cards)
+    else:
+        winner = players[0] if card_compare > 0 else players[1]
+        print(f'{winner} won the war!')
 
-    print(f'{winner} won the war!')
     return winner, risked_cards
 
 
